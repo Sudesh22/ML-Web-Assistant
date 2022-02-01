@@ -1,0 +1,7 @@
+*.json
+*.pickle
+*.index
+*.meta
+*.data-00000-of-00001
+checkpoint
+__pycache__/

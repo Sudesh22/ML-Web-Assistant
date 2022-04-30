@@ -8,6 +8,7 @@ import tensorflow
 import random
 import json
 import pickle
+import pandas as pd
 
 with open("intents.json") as file:
     data = json.load(file)
@@ -35,18 +36,47 @@ def bag_of_words(s, words):
         for i, w in enumerate(words):
             if w == se:
                 bag[i] = 1
-            
     return numpy.array(bag)
 
 def chat(input):
     while True:
-
-        results = model.predict([bag_of_words(input, words)])
+        results = model.predict([bag_of_words(input, words)])[0]
         results_index = numpy.argmax(results)
         tag = labels[results_index]
 
-        for tg in data["intents"]:
-            if tg['tag'] == tag:
-                responses = tg['responses']
+        if results[results_index] > 0.7:
+            for tg in data["intents"]:
+                if tg['tag'] == tag:
+                    responses = tg['responses']
+            reply = random.choice(responses)
+            if reply == "recommend":
+                reply = Recommend()
+                return reply
+            elif reply == "best selling":
+                reply = BestSelling()
+                return reply
+            else:
+                return reply
+        else:
+            return "I didn't get that, try again."
 
-        return random.choice(responses)
+def Recommend():
+    df = pd.read_excel('Cake_List.xlsx')
+    final_data = df.sort_values('Ratings')
+    new_data = final_data.tail()
+    best_names = new_data['Name'].to_list()
+    str_ = ""
+    count = 0
+    for n in best_names:
+        if count == len(best_names)-1:
+            str_ = str_ + n + "."
+        else:
+            str_ = str_ + n + ", "
+            count +=1
+    return "Our bestselling cakes are as follows: " + str_
+
+def BestSelling():
+    df = pd.read_excel('Cake_List.xlsx')
+    all_names = df['Name'].to_list()
+    all_ratings = df['Ratings'].to_list()
+    return "According to our customers " + str(all_names[all_ratings.index(max(all_ratings))]) + " is our best selling cake "

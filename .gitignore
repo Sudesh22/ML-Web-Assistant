@@ -1,6 +1,9 @@
+.vscode/
+__pycache__/
 *.pickle
 *.index
-*.meta
 *.data-00000-of-00001
+*.meta
 checkpoint
-__pycache__/
+*.xlsx
+*.json

@@ -92,7 +92,7 @@ def Recommend():
 ```
 
 ### Bestselling() ✨
-This function does the same exact function as the recommend function the only difference is that instead of getting the last 5 entries it just gets a single entry from the dataset and displays sayong according to our customers this is our bestselling cake.
+This function does the same exact function as the recommend function the only difference is that instead of getting the last 5 entries it just gets a single entry from the dataset and displays saying according to our customers this is our bestselling cake.
 ```Python
 def BestSelling():
     df = pd.read_excel('Cake_List.xlsx')
